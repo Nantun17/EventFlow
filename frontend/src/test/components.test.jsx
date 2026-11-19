@@ -5,6 +5,7 @@ import { afterEach, describe, expect, test, vi } from 'vitest';
 import EventForm from '../components/EventForm.jsx';
 import RegistrationForm from '../components/RegistrationForm.jsx';
 import EventCard from '../components/EventCard.jsx';
+import Navbar from '../components/Navbar.jsx';
 import EventsList from '../pages/EventsList.jsx';
 import EventDetails from '../pages/EventDetails.jsx';
 
@@ -164,5 +165,24 @@ describe('EventDetails', () => {
     expect(await screen.findByText('Registration successful!')).toBeInTheDocument();
     expect(await screen.findByText('asha@example.com')).toBeInTheDocument();
     expect(screen.getByText('Registration successful!')).toBeInTheDocument();
+  });
+});
+
+describe('Navbar', () => {
+  test('renders navigation links and toggles mobile menu', async () => {
+    render(
+      <MemoryRouter>
+        <Navbar />
+      </MemoryRouter>
+    );
+
+    const toggleButton = screen.getByRole('button', { name: /toggle navigation/i });
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(toggleButton);
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.click(toggleButton);
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
   });
 });
